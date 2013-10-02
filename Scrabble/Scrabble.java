@@ -35,10 +35,11 @@ public class Scrabble {
        
        if (myDictionary.contains(wordToDate)) System.out.println(wordToDate);
        for (int i = 0; i < availableLetters.length; i++){
-            String newWordToDate = wordToDate + availableLetters[i];
+            String newWordToDate = wordToDate + availableLetters[i]; // New string + letter
 
-            char[] newAvailableLetters = new char[availableLetters.length-1];
-            int count = 0;
+            // Take out the letter added above from the array of letters available
+            char[] newAvailableLetters = new char[availableLetters.length-1]; 
+            int count = 0; // Use independent counter to avoid out of bounds error when reaching 
             for (int w = 0; w < availableLetters.length; w++){
                 if (w != i){
                     newAvailableLetters[count] = availableLetters[w];
@@ -74,7 +75,6 @@ public class Scrabble {
                 count++;
             }
             */
-
 
             printValidWords(newAvailableLetters, newWordToDate);
        }
