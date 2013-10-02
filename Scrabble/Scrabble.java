@@ -18,7 +18,7 @@ public class Scrabble {
         String word;
         while ((word=myFileReader.readLine())!=null) myDictionary.add(word);
 
-	myFileReader.close();
+    myFileReader.close();
     }
 
 
@@ -32,18 +32,35 @@ public class Scrabble {
         Nothing
      */
     public static void printValidWords(char availableLetters[], String wordToDate) {
-	   
+       
        if (myDictionary.contains(wordToDate)) System.out.println(wordToDate);
        for (int i = 0; i < availableLetters.length; i++){
             String newWordToDate = wordToDate + availableLetters[i];
 
+            char[] newAvailableLetters = new char[availableLetters.length-1];
+            int count = 0;
+            for (int w = 0; w < availableLetters.length; w++){
+                if (w != i){
+                    newAvailableLetters[count] = availableLetters[w];
+                }
+                else if(w == i){
+                    count--;
+                }
+                count++;
+            }
+
+            /*
             // Create temporary array with the character in pos. i removed
             char[] tempArray = new char[availableLetters.length];
             for (int j = 0; j < availableLetters.length; j++){
                 tempArray[j] = availableLetters[j];
             }
             tempArray[i] = '&';
+            */
 
+
+
+            /*
             // Shrink the array with the character removed
             char[] newAvailableLetters = new char[availableLetters.length-1];
             int count = 0;
@@ -56,6 +73,9 @@ public class Scrabble {
                 }
                 count++;
             }
+            */
+
+
             printValidWords(newAvailableLetters, newWordToDate);
        }
     }
@@ -66,9 +86,9 @@ public class Scrabble {
      */
     public static void main (String args[]) throws Exception {
        
-    	// First, read the dictionary
-    	try {
-    	    readDictionaryFromFile("englishDictionary.txt");
+        // First, read the dictionary
+        try {
+            readDictionaryFromFile("englishDictionary.txt");
         }
         catch(Exception e) {
             System.out.println("Error reading the dictionary: "+e);
