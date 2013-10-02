@@ -1,5 +1,5 @@
-// STUDENT_NAME:
-// STUDENT_ID:
+// STUDENT_NAME: Michael Ho 
+// STUDENT_ID: 260532097
 
 import java.util.*;
 import java.io.*;
@@ -33,18 +33,28 @@ public class Scrabble {
      */
     public static void printValidWords(char availableLetters[], String wordToDate) {
 	   
-       if (this.myDictionary.contains(wordToDate)) System.out.println(wordToDate);
+       if (myDictionary.contains(wordToDate)) System.out.println(wordToDate);
        for (int i = 0; i < availableLetters.length; i++){
             String newWordToDate = wordToDate + availableLetters[i];
-            char[] newAvailableLetters = new char[availableLetters.length-1];
 
-            // Create new array with the character removed
-            for(int j = 0; j < availableLetters.length; j++){
-                if (availableLetters[j] != availableLetters[i]) {
-                    for(int w = 0; w < availableLetters.length; w++){
-                        newAvailableLetters.add(availableLetters[j]);
-                    }
+            // Create temporary array with the character in pos. i removed
+            char[] tempArray = new char[availableLetters.length];
+            for (int j = 0; j < availableLetters.length; j++){
+                tempArray[j] = availableLetters[j];
+            }
+            tempArray[i] = '&';
+
+            // Shrink the array with the character removed
+            char[] newAvailableLetters = new char[availableLetters.length-1];
+            int count = 0;
+            for (int w = 0; w < newAvailableLetters.length; w++){
+                if (tempArray[w] != '&'){
+                    newAvailableLetters[count] = tempArray[w];
                 }
+                else if(tempArray[w] == '&'){
+                    count--;
+                }
+                count++;
             }
             printValidWords(newAvailableLetters, newWordToDate);
        }
