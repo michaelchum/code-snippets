@@ -13,36 +13,56 @@ class MergeSortQuestion {
     	int indexStart = start;
     	int indexFirstThird = firstThird + 1;
     	int indexSecondThird = secondThird + 1;
-		int tmp[] = new int[A.length];
-		int tmpIndex = start;
+		int temp[] = new int[A.length];
+		int tempIndex = start;
 
 		while (tempIndex <= stop){
 
 			// Value of indexStart is smallest
-			if ((indexFirstThird > secondThird && indexSecondThird > stop) || 
-			  (indexStart <= firstThird && A[indexStart] < A[indexFirstThird] && A[indexStart] < A[indexSecondThird]) ){
-			  	temp[tmpIndex] = A[indexStart];
+			if (indexStart <= firstThird 
+				&& (indexFirstThird > secondThird || (indexFirstThird <= secondThird && A[indexStart] <= A[indexFirstThird])) 
+				&& (indexSecondThird > stop || (indexSecondThird <= stop && A[indexStart] <= A[indexSecondThird]))) 
+			{
+			  	temp[tempIndex] = A[indexStart];
 			  	indexStart++;
-			} 
+			}  
+		
 			// Value of indexFirstThird is smallest	
-			else if ((indexStart > indexFirstThird && indexSecondThird > stop) ||
-				(indexFirstThird <= secondThird && A[indexFirstThird] < A[indexStart] && A[indexFirstThird] < A[indexSecondThird])){
+			else if ((indexFirstThird <= secondThird) 
+				&& (indexStart > firstThird || (indexStart <= firstThird && A[indexFirstThird] <= A[indexStart]))
+				&& (indexSecondThird > stop || (indexSecondThird <= stop && A[indexFirstThird] <= A[indexSecondThird])))
+
+			{
 				temp[tempIndex] = A[indexFirstThird];
 				indexFirstThird++;
 			}
 			// Value of indexSecondThird is smallest
-			else {
+			else if (indexSecondThird <= stop)
+			{
 				temp[tempIndex] = A[indexSecondThird];
 				indexSecondThird++;
 			}
 
 			tempIndex++;
 		}
+
+		// Copy back the temp array into the original array
+		for (int i = start; i <= (stop); i++){
+			A[i] = temp[i];
+		}
+
     }
 
     // sorts A[start...stop]
     public static void mergeSortThreeWay(int A[], int start, int stop) {
-		
+		if (start < stop){
+			int firstThird = start + (stop-start)/3;
+			int secondThird = start + 2*(stop-start)/3;
+			mergeSortThreeWay(A, start, firstThird);
+			mergeSortThreeWay(A, firstThird+1, secondThird);
+			mergeSortThreeWay(A, secondThird+1, stop);
+			mergeThreeWay(A, start, firstThird, secondThird, stop);
+		}
     }
 
     
@@ -54,7 +74,7 @@ class MergeSortQuestion {
 
 		System.out.println("Sorted array is:\n");
 		for (int i=0;i<myArray.length;i++) {
-		    System.out.println(myArray[i]+" ");
+		    System.out.print(myArray[i]+" ");
 		}
     }
 }
