@@ -21,7 +21,7 @@ class MergeSortQuestion {
 			// Value of indexStart is smallest
 			if (indexStart <= firstThird 
 				&& (indexFirstThird > secondThird || (indexFirstThird <= secondThird && A[indexStart] <= A[indexFirstThird])) 
-				&& (indexSecondThird > stop || (indexSecondThird <= stop && A[indexStart] <= A[indexSecondThird]))) 
+				&& (indexSecondThird > stop || (ind exSecondThird <= stop && A[indexStart] <= A[indexSecondThird]))) 
 			{
 			  	temp[tempIndex] = A[indexStart];
 			  	indexStart++;
