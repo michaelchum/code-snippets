@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+// MAIN MENU
+
 int menu(){
 	int option = 0;
 	printf("MAIN MENU\n==========\n");
@@ -16,6 +18,8 @@ int menu(){
 	}
 	return option;
 }
+
+// OPTION 1: INPUT SENTENCES BY USER
 
 void input(char str[50][50], int *pointerRows){
 	printf("Input sentences to fill the matrix:\n");
@@ -41,7 +45,7 @@ void input(char str[50][50], int *pointerRows){
 	}
 	*pointerRows = count;
 
-	// Filter out all carriage enter
+	// Filter out all carriage enters
 	for (i = 0; i < length; i++){
 		for (j = 0; j < length; j++){
 			if (str[i][j] == '\n') str[i][j] = '\0';
@@ -50,11 +54,13 @@ void input(char str[50][50], int *pointerRows){
 
 }
 
+// OPTION 2: ENCRYPT MATRIX
+
 void encrypt(char str[50][50], char encrypted[50][50]){
 	int n,i,j, fromZero, temp = 0;
 	int length = 50;
 
-	// Initialize the 2D matrix with null characters
+	// Initialize the encrypting 2D matrix with null characters
 	for (i = 0; i < length; i++){
 		for (j = 0; j < length; j++){
 			encrypted[i][j] = '\0';
@@ -72,10 +78,12 @@ void encrypt(char str[50][50], char encrypted[50][50]){
 			if (str[i][j]>='a' && str[i][j]<='z'){ // lowercase
 				fromZero = str[i][j] - 'a';
 				temp = (fromZero + n) % 26;
+				while (temp < 0) temp += 26; // The C language doesn't support negative mod!
 				encrypted[i][j] = temp + 'a';
 			} else if (str[i][j]>='A' && str[i][j]<='Z'){ // uppercase
 				fromZero = str[i][j] - 'A';
 				temp = (fromZero + n) % 26;
+				while (temp < 0) temp += 26; // The C language doesn't support negative mod!
 				encrypted[i][j] = temp + 'A';
 			} else { // not a letter
 				encrypted[i][j] = str[i][j];
@@ -122,11 +130,13 @@ void encrypt(char str[50][50], char encrypted[50][50]){
 
 }
 
+// OPTION 3: DECRYPT MATRIX
+
 void decrypt(char encrypted[50][50], char decrypted[50][50]){
 	int n,i,j, fromZero, temp = 0;
 	int length = 50;
 
-	// Initialize the 2D matrix with null characters
+	// Initialize the decrypting 2D matrix with null characters
 	for (i = 0; i < length; i++){
 		for (j = 0; j < length; j++){
 			decrypted[i][j] = '\0';
@@ -173,18 +183,24 @@ void decrypt(char encrypted[50][50], char decrypted[50][50]){
 		for (j=0; j < length; j++){
 			if (decrypted[i][j]>='a' && decrypted[i][j]<='z'){ // lowercase
 				fromZero = decrypted[i][j] - 'a';
-				temp = (fromZero - n) % 26;
+				temp = (fromZero - n) % 26; 
+				while (temp < 0) temp += 26; // The C language doesn't support negative mod!
 				decrypted[i][j] = temp + 'a';
 			} else if (decrypted[i][j]>='A' && decrypted[i][j]<='Z'){ // uppercase
 				fromZero = decrypted[i][j] - 'A';
-				temp = (fromZero - n) % 26;
+				temp = (fromZero - n) % 26; 
+				while (temp < 0) temp += 26; // The C language doesn't support negative mod!
 				decrypted[i][j] = temp + 'A';
 			} else { // not a letter
 				decrypted[i][j] = decrypted[i][j];
 			}
 		}
 	}
+
+
 }
+
+// PRINT MATRIX
 
 void printMatrix(char str[50][50]){
 	int i, j, check;
@@ -200,12 +216,12 @@ void printMatrix(char str[50][50]){
 }
 
 int main(int argc, char *argv[]){
-	int option = 9;
-	int numberRows = 0;
-	int *pointerRows = &numberRows;
-	char str[50][50];
-	char encrypted[50][50];
-	char decrypted[50][50];
+	int option = 9; // Option input by user from menu()
+	int numberRows = 0; // Number of sentences (rows) input by the user
+	int *pointerRows = &numberRows; // Pointer to the number of rows
+	char str[50][50]; // Stores the input matrix
+	char encrypted[50][50]; // Stores the encrypted matrix
+	char decrypted[50][50]; // Stores the decrypted matrix
 
 	do{
 		option = menu();
