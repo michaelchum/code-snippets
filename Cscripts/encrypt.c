@@ -10,6 +10,7 @@ int menu(){
 	printf("4. Exit\n");
 	printf("Selection: ");
 	scanf("%d", &option);
+	getchar(); // Absorb the carriage return from buffer
 	if(option>4||option<0){
 		option = 5;
 	}
@@ -17,18 +18,16 @@ int menu(){
 }
 
 void input(char str[50][50], int *pointerRows){
-	//printf("Input sentences to fill the matrix\n");
+	printf("Input sentences to fill the matrix:\n");
 	int i, j, count, length;
 	length = 50;
 
-	// Initialize the 2D matrix
+	// Initialize the 2D matrix with null characters
 	for (i = 0; i < length; i++){
 		for (j = 0; j < length; j++){
 			str[i][j] = '\0';
 		}	
 	}
-
-	getchar(); // Absorb the enter key from buffer
 
 	// Get input from user
 	for (count = 0; count < length; count++){
@@ -42,17 +41,32 @@ void input(char str[50][50], int *pointerRows){
 	}
 	*pointerRows = count;
 
+	// Filter out all carriage enter
+	for (i = 0; i < length; i++){
+		for (j = 0; j < length; j++){
+			if (str[i][j] == '\n') str[i][j] = '\0';
+		}	
+	}
+
 }
 
 void encrypt(char str[50][50], char encrypted[50][50]){
 	int n,i,j, fromZero, temp = 0;
 	int length = 50;
 
+	// Initialize the 2D matrix with null characters
+	for (i = 0; i < length; i++){
+		for (j = 0; j < length; j++){
+			encrypted[i][j] = '\0';
+		}	
+	}
+
 	// Input the integer N by user
 	printf("Input an integer N to encrypt: ");
 	scanf("%i", &n);
+	getchar(); // Absorb the carriage return from buffer
 
-	// Shift every character of the matrix by N (exluding symbols and numbers)
+	// Shift every character of the matrix by N (excluding symbols and numbers)
 	for (i=0; i < length; i++){
 		for (j=0; j < length; j++){
 			if (str[i][j]>='a' && str[i][j]<='z'){ // lowercase
@@ -87,6 +101,25 @@ void encrypt(char str[50][50], char encrypted[50][50]){
 		}
 	}
 
+	// Reformat the matrix for proper printing rows 
+	int charFound;
+	for (i=0; i<length; i++){
+		charFound = 0;
+		for (j=length-1; j>=0; j--){
+			if (!charFound && encrypted[i][j]!='\0') charFound = 1;
+			if (charFound && encrypted[i][j]=='\0') encrypted[i][j] = ' ';
+		}
+	}
+
+	// Reformat the matrix for proper printing columns
+	for (j=0; j<length; j++){
+		charFound = 0;
+		for (i=length-1; i>=0; i--){
+			if (!charFound && encrypted[i][j]!='\0') charFound = 1;
+			if (charFound && encrypted[i][j]=='\0') encrypted[i][j] = ' ';
+		}
+	}
+
 }
 
 void decrypt(char str[50][50], char decrypted[50][50]){
@@ -96,12 +129,15 @@ void decrypt(char str[50][50], char decrypted[50][50]){
 }
 
 void printMatrix(char str[50][50]){
-	int i, j;
+	int i, j, check;
 	int length = 50;
 	for (i = 0; i < length; i++){
+		check = 0;
 		for (j = 0; j < length; j++){
-			printf("%c", str[i][j]);		
+			printf("%c", str[i][j]);
+			if (!check && str[i][j]!='\0') check++;		
 		}
+		if (check) printf("\n");
 	}
 }
 
