@@ -122,10 +122,68 @@ void encrypt(char str[50][50], char encrypted[50][50]){
 
 }
 
-void decrypt(char str[50][50], char decrypted[50][50]){
-	int n = 0;
+void decrypt(char encrypted[50][50], char decrypted[50][50]){
+	int n,i,j, fromZero, temp = 0;
+	int length = 50;
+
+	// Initialize the 2D matrix with null characters
+	for (i = 0; i < length; i++){
+		for (j = 0; j < length; j++){
+			decrypted[i][j] = '\0';
+		}	
+	}
+
+	// Transpose the encrypted matrix to the decrypted matrix
+	for (i=0; i<length; i++){
+		for (j=0; j<length; j++){
+			if(encrypted[i][j]=='\n'||encrypted[i][j]=='\r'){
+				decrypted[i][j]='\0';
+			} else {
+				decrypted[i][j] = encrypted[j][i];
+			}
+		}
+	}
+
+	// Reformat the matrix for proper printing rows 
+	int charFound;
+	for (i=0; i<length; i++){
+		charFound = 0;
+		for (j=length-1; j>=0; j--){
+			if (!charFound && decrypted[i][j]!='\0') charFound = 1;
+			if (charFound && decrypted[i][j]=='\0') decrypted[i][j] = ' ';
+		}
+	}
+
+	// Reformat the matrix for proper printing columns
+	for (j=0; j<length; j++){
+		charFound = 0;
+		for (i=length-1; i>=0; i--){
+			if (!charFound && decrypted[i][j]!='\0') charFound = 1;
+			if (charFound && decrypted[i][j]=='\0') decrypted[i][j] = ' ';
+		}
+	}
+
+	// Input the integer N by user
 	printf("Input an integer N to decrypt: ");
 	scanf("%i", &n);
+	getchar(); // Absorb the carriage return from buffer
+
+	// Shift back every character of the matrix by N (excluding symbols and numbers)
+	for (i=0; i < length; i++){
+		for (j=0; j < length; j++){
+			if (decrypted[i][j]>='a' && decrypted[i][j]<='z'){ // lowercase
+				fromZero = decrypted[i][j] - 'a';
+				temp = (fromZero - n) % 26;
+				decrypted[i][j] = temp + 'a';
+			} else if (decrypted[i][j]>='A' && decrypted[i][j]<='Z'){ // uppercase
+				fromZero = decrypted[i][j] - 'A';
+				temp = (fromZero - n) % 26;
+				decrypted[i][j] = temp + 'A';
+			} else { // not a letter
+				decrypted[i][j] = decrypted[i][j];
+			}
+		}
+	}
 }
 
 void printMatrix(char str[50][50]){
@@ -161,7 +219,8 @@ int main(int argc, char *argv[]){
 				printMatrix(encrypted);
 				break;
 			case 3:
-				decrypt(str, decrypted);
+				decrypt(encrypted, decrypted);
+				printMatrix(decrypted);
 				break;
 		}
 	} while(option != 4);
