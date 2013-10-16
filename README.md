@@ -1,4 +1,4 @@
 code-snippets
 =============
 
-All little coding exercises and algorithms for experiment
+Little coding exercises and algorithms for practice in multiple languages
