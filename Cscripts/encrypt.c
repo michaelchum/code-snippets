@@ -52,6 +52,7 @@ void encrypt(char str[50][50], char encrypted[50][50]){
 	printf("Input an integer N to encrypt: ");
 	scanf("%i", &n);
 
+	// Shift every character of the matrix by N (exluding symbols and numbers)
 	for (i=0; i < length; i++){
 		for (j=0; j < length; j++){
 			if (str[i][j]>='a' && str[i][j]<='z'){ // lowercase
@@ -64,6 +65,24 @@ void encrypt(char str[50][50], char encrypted[50][50]){
 				encrypted[i][j] = temp + 'A';
 			} else { // not a letter
 				encrypted[i][j] = str[i][j];
+			}
+		}
+	}
+
+	// Copy the encrypted matrix back to original variable
+	for (i=0; i<length; i++){
+		for (j=0; j<length; j++){
+			str[i][j] = encrypted[i][j];
+		}
+	}
+
+	// Transpose the encrypted matrix
+	for (i=0; i<length; i++){
+		for (j=0; j<length; j++){
+			if(encrypted[i][j]=='\n'||encrypted[i][j]=='\r'){
+				encrypted[i][j]='\0';
+			} else {
+				encrypted[i][j] = str[j][i];
 			}
 		}
 	}
@@ -81,7 +100,7 @@ void printMatrix(char str[50][50]){
 	int length = 50;
 	for (i = 0; i < length; i++){
 		for (j = 0; j < length; j++){
-			printf("%c", str[i][j]);
+			printf("%c", str[i][j]);		
 		}
 	}
 }
@@ -99,6 +118,7 @@ int main(int argc, char *argv[]){
 		switch (option){
 			case 1:
 				input(str, pointerRows);
+				printMatrix(str);
 				break;
 			case 2:
 				encrypt(str, encrypted);
