@@ -1,3 +1,6 @@
+// NAME: Michael Ho
+// STUDENT ID: 260532097
+
 package a1posted;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,16 +154,20 @@ public class IndexedHeap{
 	 */
 
 	private void swap(int i, int j){
+
+		// Swap the priorities
 		Double tmp;
 		tmp = priorities.get(j);
 		priorities.set( j, priorities.get(i) );
 		priorities.set( i, tmp );	
 
+		// Swap the names
 		String strtmp;
 		strtmp = names.get(j);
 		names.set( j, names.get(i) );
 		names.set( i, strtmp );	
 
+		// Update the new names to map
 		nameToIndex.put( names.get(j), j);
 		nameToIndex.put ( names.get(i), i);
 	}
@@ -171,9 +178,28 @@ public class IndexedHeap{
 	
 	public String removeMin(){
 
-		//----------------------- ADD YOUR CODE HERE  ----------------------------
+		// If the priority queue has no element priorities.size()==1 or less, return null
+		if (priorities.size()<2 || names.size()<2) return null;
 
-		return names.get(1);  //  replace this line
+		Double tmp = priorities.get(1);
+		String strtmp = names.get(1);
+
+		if (priorities.size() > 2){ // If we have more than one element in the heap
+			priorities.set(1,priorities.remove(priorities.size()-1));
+			names.set(1,names.remove(names.size()-1));
+			nameToIndex.remove(names.get(1));
+			nameToIndex.put(names.get(1),1);
+			downHeap(1);
+		}
+		else { // If there's only one element in the heap priorities.size()==2
+			priorities.remove(1);
+			names.remove(1);
+		}
+
+		// Remove the minimum from hashmap
+		nameToIndex.remove(strtmp);
+
+		return strtmp;
 	}	
 
 	/*
@@ -181,13 +207,17 @@ public class IndexedHeap{
 	 * you need to implement.   The second gives a default priority of Double.POSITIVE_INFINITY	  
 	 */
 	
-	public void  add(String name, double priority){
+	public void add(String name, double priority){
 
 		if  (contains( name ))
 			throw new IllegalArgumentException("Trying to add " + String.valueOf(name) + ", but its already there.");
 
 		//----------------------- ADD YOUR CODE HERE  ----------------------------
-		
+
+		priorities.add(new Double(priority));  // appends to end of list
+		names.add(name); // appends to end of list
+		nameToIndex.put(name,(priorities.size()-1)); // add to hashmap
+		upHeap(priorities.size()-1);
 	}
 	
 	public void  add(String name){
@@ -205,6 +235,14 @@ public class IndexedHeap{
 			throw new IllegalArgumentException("Trying to change priority of " + String.valueOf(name) + ", but its not there.");
 
 		//-----------------------  ADD YOUR CODE HERE ----------------------------
+
+		int currentIndex = nameToIndex.get(name);
+		Double currentPriority = priorities.get(currentIndex);
+
+		// Check if new priority is higher or lower than previous priority and bubble up or bubble down accordingly
+		priorities.set(currentIndex, new Double(priority));
+		if (Double.compare(currentPriority, priority)<0) downHeap(currentIndex); 
+		else if (Double.compare(currentPriority, priority)>0) upHeap(currentIndex);
 
 	}
 	

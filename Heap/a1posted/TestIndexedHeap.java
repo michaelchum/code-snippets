@@ -39,12 +39,24 @@ public class TestIndexedHeap {
 			pq.add( "v_" + new Integer(i).toString() , d);
 		}
 
+		// TESTING
+
+		for (int i = 1; i <= numElements; i++){
+			System.out.println(pq.names.get(i) + " " + String.valueOf(pq.priorities.get(i)));
+		}
+
 		/*
 		 *  Change the priority so that the ith random element has priority i.
 		 */
 		
 		for (int i=1; i <= numElements; i++)
 			pq.changePriority("v_" + new Integer(i).toString(), i*1.0);
+
+		// TESTING
+
+		for (int i = 1; i <= numElements; i++){
+			System.out.println(pq.names.get(i) + " " + String.valueOf(pq.priorities.get(i)));
+		}
 
 		System.out.println("\nRemoving all the elements (in order of priority) ");
 
@@ -62,7 +74,7 @@ public class TestIndexedHeap {
 		}
 
 		for (int i=0; i < numElements; i++){
-			System.out.println( String.valueOf(names[i]) + " " + String.valueOf(priorities[i])    );
+			System.out.println( String.valueOf(names[i]) + " " + String.valueOf(priorities[i]));
 		}
 	}
 
