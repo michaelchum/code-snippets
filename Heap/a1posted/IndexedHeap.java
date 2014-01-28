@@ -1,6 +1,3 @@
-// NAME: Michael Ho
-// STUDENT ID: 260532097
-
 package a1posted;
 import java.util.ArrayList;
 import java.util.HashMap;
